@@ -4,9 +4,9 @@ require File.expand_path('../lib/opensesame/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["R. Tyler Croy"]
   gem.email         = ["tyler@monkeypox.org"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.description   = %q{Simple gem to handle creating DB grans}
+  gem.summary       = %q{Simple gem to handle creating DB grans}
+  gem.homepage      = "https://source.flexilis.local/rcroy/opensesame"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
