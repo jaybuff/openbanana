@@ -31,8 +31,13 @@ module Opensesame
         identify_by = "IDENTIFIED BY '#{config['password']}'"
       end
 
-      grants << "CREATE USER '#{config['username']}'@'%' #{identify_by};"
-      grants << "GRANT ALL PRIVILEGES ON #{config['database']}.* TO '#{config['username']}'@'%' WITH GRANT OPTION;"
+      unless config['networks']
+        grants << "GRANT ALL PRIVILEGES ON #{config['database']}.* TO '#{config['username']}'@'%' #{identify_by};"
+      else
+        config['networks'].each do |network|
+          grants << "GRANT ALL PRIVILEGES ON #{config['database']}.* TO '#{config['username']}'@'#{network}' #{identify_by};"
+        end
+      end
     end
 
     return grants

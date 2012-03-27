@@ -5,12 +5,6 @@ describe 'db:grant' do
 end
 
 describe Opensesame do
-  let(:config) do
-    { 'database' => 'test_db',
-      'username' => 'test_user',
-      'password' => 'test_password'}
-  end
-
   before :each do
     RAILS_ROOT = 'dummy-root'
     Rails = double('rails')
@@ -24,6 +18,12 @@ describe Opensesame do
   end
 
   describe '#config' do
+    let(:config) do
+      { 'database' => 'test_db',
+        'username' => 'test_user',
+        'password' => 'test_password'}
+    end
+
     context 'with development configuration' do
       before :each do
         Opensesame.should_receive(:load_yml).and_return({'development' => config})
@@ -42,19 +42,37 @@ describe Opensesame do
       Opensesame.should_receive(:config).and_return(config)
     end
 
+    context 'in production' do
+      describe 'with networks' do
+        let(:config) do
+          { 'database' => 'test_db',
+            'username' => 'test_user',
+            'password' => 'test_password',
+            'networks' => ['127.0.0.0/24']}
+        end
+
+        it 'should have networks' do
+          result = Opensesame.grants
+          result.should include("GRANT ALL PRIVILEGES ON test_db.* TO 'test_user'@'127.0.0.0/24' IDENTIFIED BY 'test_password';")
+        end
+      end
+    end
+
     context 'grants should' do
-      let(:result) { Opensesame.grants }
+      let(:config) do
+        { 'database' => 'test_db',
+          'username' => 'test_user',
+          'password' => 'test_password'}
+      end
 
       it 'generate a create database call' do
+        result = Opensesame.grants
         result.should include('CREATE DATABASE test_db;')
       end
 
-      it 'generate a create user call' do
-        result.should include("CREATE USER 'test_user'@'%' IDENTIFIED BY 'test_password';")
-      end
-
       it 'generate a grant for the user on that database' do
-        result.should include("GRANT ALL PRIVILEGES ON test_db.* TO 'test_user'@'%' WITH GRANT OPTION;")
+        result = Opensesame.grants
+        result.should include("GRANT ALL PRIVILEGES ON test_db.* TO 'test_user'@'%' IDENTIFIED BY 'test_password';")
       end
     end
   end
