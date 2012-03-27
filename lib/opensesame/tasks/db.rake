@@ -1,8 +1,9 @@
 require 'rubygems'
 require 'rake'
 
+require 'opensesame'
+
 namespace :db do
   task :grant => [:environment] do
-    dbinfo = YAML.load_file('config/database.yml')
   end
 end
