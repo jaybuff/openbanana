@@ -6,6 +6,11 @@ projects.
 What this `db:grant` task does is creates the database and sets up the initial grants for the database
 configured in the `config/database.yml` file
 
+To use Opensesame, include it in your `Rakefile`:
+
+```
+require 'opensesame/tasks'
+```
 
 ### Environment variables
 
