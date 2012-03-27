@@ -1,29 +1,15 @@
 # Opensesame
 
-TODO: Write a gem description
+Opensesame is a gem that, currently, provides a `db:grant` rake task for Rails
+projects.
 
-## Installation
+What this `db:grant` task does is creates the database and sets up the initial grants for the database
+configured in the `config/database.yml` file
 
-Add this line to your application's Gemfile:
 
-    gem 'opensesame'
+### Environment variables
 
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install opensesame
-
-## Usage
-
-TODO: Write usage instructions here
-
-## Contributing
-
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Added some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+* `DB_USER` overrides the default user (root) to grant privileges
+* `DB_PASSWORD` overrides the default password (*empty*) to grant privileges
+* `DB_HOST` overrides the hostname for the database server (defaults to
+  *localhost*)
