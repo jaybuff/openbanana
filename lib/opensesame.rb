@@ -7,7 +7,7 @@ module Opensesame
   end
 
   def self.load_yml
-    YAML.load_file(File.join(RAILS_ROOT, 'config', 'database.yml'))
+    YAML.load_file(File.join(Rails.root, 'config', 'database.yml'))
   end
 
   def self.config

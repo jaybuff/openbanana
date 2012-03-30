@@ -6,13 +6,13 @@ end
 
 describe Opensesame do
   before :each do
-    RAILS_ROOT = 'dummy-root'
     Rails = double('rails')
+    Rails.stub(:root).and_return('dummy_root')
   end
 
   describe '#load_yml' do
-    it 'should load the database.yml file on RAILS_ROOT/config' do
-      YAML.should_receive(:load_file).with(RAILS_ROOT + '/config/database.yml').and_return({})
+    it 'should load the database.yml file on Rails.root/config' do
+      YAML.should_receive(:load_file).with(Rails.root + '/config/database.yml').and_return({})
       Opensesame.load_yml
     end
   end
@@ -75,10 +75,6 @@ describe Opensesame do
         result.should include("GRANT ALL PRIVILEGES ON test_db.* TO 'test_user'@'%' IDENTIFIED BY 'test_password';")
       end
     end
-  end
-
-  after :each do
-    RAILS_ROOT = nil
   end
 end
 

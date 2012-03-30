@@ -7,10 +7,15 @@ What this `db:grant` task does is creates the database and sets up the initial g
 configured in the `config/database.yml` file
 
 To use Opensesame, include it in your `Rakefile`:
-
 ```
 require 'opensesame/tasks'
-```
+
+And in your `Gemfile`:
+
+gem "opensesame", "~> 0.1"
+
+
+Make sure you have a source for either `maestro` or `dogwood` in your Gemfile.```
 
 ### Environment variables
 
