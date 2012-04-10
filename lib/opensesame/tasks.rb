@@ -5,7 +5,7 @@ require 'opensesame'
 
 namespace :db do
   desc "Set up the apprpriate user grants for this project based on config/database.yml"
-  task :grant => [:environment] do
+  task :grant do
     username = ENV['DB_USER'] || 'root'
     password = ENV['DB_PASSWORD'] || ''
     host = nil
