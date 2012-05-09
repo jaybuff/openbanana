@@ -1,22 +1,36 @@
 require "opensesame/version"
+require 'rake'
 
 module Opensesame
+  extend Rake::DSL
+
   # Defining this just to make stubbing in rspec easier
   def self.env
     ENV
   end
 
-  def self.load_yml
-    YAML.load_file(File.join(Rails.root, 'config', 'database.yml'))
+  # load config YML file
+  def self.load_yml(filename = 'database.yml')
+    YAML.load_file(File.join(Rails.root, 'config', filename))
   end
 
+  # read config YML for environment
   def self.config
     config = Opensesame.load_yml
     return config[Rails.env]
   end
 
-  def self.grants
-    config = Opensesame.config
+  # read config for sharded case using octopus shards.yml
+  def self.shard_config
+    config = Opensesame.load_yml('shards.yml')
+    config = config['octopus'] if config.keys == ['octopus']
+    config = config[Rails.env]
+    config = config['shards'] if config.keys == ['shards']
+    return config
+  end
+
+  # generate SQL statements for DB creation, permission grant
+  def self.grant_for(config)
     grants = []
 
     unless config['database']
@@ -41,5 +55,43 @@ module Opensesame
     end
 
     return grants
+  end
+
+  # run block on all contained hashes which have the key 'database'
+  def self.traverse(obj, &block)
+    case obj
+    when Hash
+      if obj['database']
+        block.call(obj)
+      else
+        obj.each {|k,v| traverse(v, &block)}
+      end
+    when Array
+      obj.each {|v| traverse(v, &block)}
+    end
+  end
+
+  # generate grants
+  def self.grants(args = {})
+    config = args[:sharded] ? Opensesame.shard_config : Opensesame.config
+    grants = []
+    Opensesame.traverse(config) do |leaf_config|
+      grants += Opensesame.grant_for(leaf_config)
+    end
+    return grants
+  end
+
+  # run task (here for DRY-ness)
+  def self.grants_task(args = {})
+    username = ENV['DB_USER'] || 'root'
+    password = ENV['DB_PASSWORD'] || ''
+    host = nil
+    if ENV['DB_HOST']
+      host = "--host=#{ENV['DB_HOST']}"
+    end
+
+    Opensesame.grants(args).each do |grant|
+      sh "mysql #{host} --user=#{username} --password=\"#{password}\" -e \"#{grant}\" || true"
+    end
   end
 end
