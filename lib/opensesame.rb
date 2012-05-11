@@ -27,6 +27,10 @@ module Opensesame
     config = config[Rails.env]
     config = config['shards'] if config.keys == ['shards']
     return config
+  rescue Errno::ENOENT => e
+    puts 'No shards.yml, using shards in database.yml'
+    config = Opensesame.load_yml
+    return Hash[config.select {|k,v| k.include?(Rails.env) && k != Rails.env}]
   end
 
   # generate SQL statements for DB creation, permission grant
