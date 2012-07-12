@@ -1,7 +1,7 @@
-require "opensesame/version"
+require "openbanana/version"
 require 'rake'
 
-module Opensesame
+module Openbanana
   extend Rake::DSL
 
   # Defining this just to make stubbing in rspec easier
@@ -16,20 +16,20 @@ module Opensesame
 
   # read config YML for environment
   def self.config
-    config = Opensesame.load_yml
+    config = Openbanana.load_yml
     return config[Rails.env]
   end
 
   # read config for sharded case using octopus shards.yml
   def self.shard_config
-    config = Opensesame.load_yml('shards.yml')
+    config = Openbanana.load_yml('shards.yml')
     config = config['octopus'] if config.keys == ['octopus']
     config = config[Rails.env]
     config = config['shards'] if config.keys == ['shards']
     return config
   rescue Errno::ENOENT => e
     puts 'No shards.yml, using shards in database.yml'
-    config = Opensesame.load_yml
+    config = Openbanana.load_yml
     return Hash[config.select {|k,v| k.include?(Rails.env) && k != Rails.env}]
   end
 
@@ -77,10 +77,10 @@ module Opensesame
 
   # generate grants
   def self.grants(args = {})
-    config = args[:sharded] ? Opensesame.shard_config : Opensesame.config
+    config = args[:sharded] ? Openbanana.shard_config : Openbanana.config
     grants = []
-    Opensesame.traverse(config) do |leaf_config|
-      grants += Opensesame.grant_for(leaf_config)
+    Openbanana.traverse(config) do |leaf_config|
+      grants += Openbanana.grant_for(leaf_config)
     end
     return grants
   end
@@ -94,7 +94,7 @@ module Opensesame
       host = "--host=#{ENV['DB_HOST']}"
     end
 
-    Opensesame.grants(args).each do |grant|
+    Openbanana.grants(args).each do |grant|
       sh "mysql #{host} --user=#{username} --password=\"#{password}\" -e \"#{grant}\" || true"
     end
   end

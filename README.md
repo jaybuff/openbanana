@@ -1,18 +1,18 @@
-# Opensesame
+# Open Banana
 
-Opensesame is a gem that, currently, provides a `db:grant` rake task for Rails
+Openbanana is a gem that, currently, provides a `db:grant` rake task for Rails
 projects.
 
 What this `db:grant` task does is creates the database and sets up the initial grants for the database
 configured in the `config/database.yml` file
 
-To use Opensesame, include it in your `Rakefile`:
+To use Openbanana, include it in your `Rakefile`:
 ```
-require 'opensesame/tasks'
+require 'openbanana/tasks'
 
 And in your `Gemfile`:
 
-gem "opensesame", "~> 0.2"
+gem "openbanana", "~> 0.2"
 
 
 Make sure you have a source for either `maestro` or `dogwood` in your Gemfile.```
