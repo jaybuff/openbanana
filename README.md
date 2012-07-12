@@ -7,12 +7,12 @@ What this `db:grant` task does is creates the database and sets up the initial g
 configured in the `config/database.yml` file
 
 To use Openbanana, include it in your `Rakefile`:
-```
-require 'openbanana/tasks'
+
+    require 'openbanana/tasks'
 
 And in your `Gemfile`:
 
-gem "openbanana", "~> 0.2"
+    gem "openbanana", "~> 0.2"
 
 
 Make sure you have a source for either `maestro` or `dogwood` in your Gemfile.```
@@ -33,28 +33,28 @@ and grant for a set of shard databases.
 
 An example shard.yml looks like:
 
-octopus:
-  ...
-  production:
-    ungrouped_shard:
-      adapter: mysql2
-      database: foo
-      .... also specify username, password, host, etc.
-    shard_group:
-      shard1:
-        database: bar_1
-        ....
-      shard2:
-        database: bar_2
-        ....
-   ...
+    octopus:
+      ...
+      production:
+        ungrouped_shard:
+          adapter: mysql2
+          database: foo
+          .... also specify username, password, host, etc.
+        shard_group:
+          shard1:
+            database: bar_1
+            ....
+          shard2:
+            database: bar_2
+            ....
+       ...
 
 or entries in database.yml that look like:
 
-...
-shard_1_production:
-  adapter: mysql2
-  database: foo_prod_s1
-  .. etc.
-shard_2_production:
-  ...
+    ...
+    shard_1_production:
+      adapter: mysql2
+      database: foo_prod_s1
+      .. etc.
+    shard_2_production:
+      ...
