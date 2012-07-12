@@ -14,7 +14,7 @@ To use Openbanana, include it in your `Rakefile`:
 
 And in your `Gemfile`:
 
-    gem "openbanana", "~> 0.2"
+    gem "openbanana"
 
 
 Make sure you have a source for either `maestro` or `dogwood` in your Gemfile.```
