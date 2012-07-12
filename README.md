@@ -1,5 +1,7 @@
 # Open Banana
 
+[![Build Status](https://buildhive.cloudbees.com/job/lookout/job/openbanana/badge/icon)](https://buildhive.cloudbees.com/job/lookout/job/openbanana/)
+
 Openbanana is a gem that, currently, provides a `db:grant` rake task for Rails
 projects.
 
