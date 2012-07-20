@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'rake'
 
-require 'openbanan'
+require 'openbanana'
 
 namespace :db do
   desc "Set up the appropriate user grants for this project based on config/database.yml"
